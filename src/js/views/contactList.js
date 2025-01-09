@@ -4,7 +4,8 @@ import "/workspaces/react-hello-webapp-fs86-contactList-cguirao/src/styles/conta
 import { Dispatch } from "../dispatch";
 import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
+import DeleteModal from '../component/deleteModal';
+import ContactCard from '../component/contactCard';
 
 const API_URL = "https://assets.breatheco.de/apis/fake/contact/";
 
@@ -58,7 +59,7 @@ export const ContactList = () => {
 
   const confirmDelete = async () => {
     try {
-      const result = await Dispatch.deleteContact(agendaName,contactToDelete.id);
+      const result = await Dispatch.deleteContact(agendaName, contactToDelete.id);
       console.log();
       if (result) {
         alert("Contact deleted successfully!");
@@ -99,75 +100,23 @@ export const ContactList = () => {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {showModal && (
-        <div className="modal show" style={{ display: "block" }}>
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Confirm Delete</h5>
-                <button type="button" className="btn-close" onClick={closeModal}></button>
-              </div>
-              <div className="modal-body">
-                <p>Are you sure you want to delete this contact?</p>
-                <p>
-                  <strong>Name: </strong>
-                  {contactToDelete?.name}
-                </p>
-                <p>
-                  <strong>Email: </strong>
-                  {contactToDelete?.email}
-                </p>
-                <p>
-                  <strong>Phone: </strong>
-                  {contactToDelete?.phone}
-                </p>
-                <p>
-                  <strong>Address: </strong>
-                  {contactToDelete?.address}
-                </p>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={closeModal}>
-                  Cancel
-                </button>
-                <button type="button" className="btn btn-danger" onClick={confirmDelete}>
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <DeleteModal
+          contact={contactToDelete}
+          onClose={closeModal}
+          onConfirm={confirmDelete}
+        />
       )}
 
 
       <div className="contact">
         {contacts.length > 0 ? (
           contacts.map((contact) => (
-            <div className="contact-resume" key={contact.id}>
-              <div className="contact-resume__info">
-                <img className="contact-resume__img" src="https://tse4.mm.bing.net/th?id=OIP.UJXz8XzkiZ_I_650E8LiEQHaEr&pid=Api&P=0&h=180" alt="Contact" />
-                <ul className="contact-resume__list">
-                  <li>
-                    <p>{contact.name}</p>
-                    <p>{contact.email}</p>
-                    <p>{contact.phone}</p>
-                    <p>{contact.address}</p>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="contact-buttons">
-                <a className="contact-buttons__update" onClick={() => goToUpdateContact(contact)}>
-                  <i className="fas fa-edit"></i>
-                </a>
-                <a
-                  className="contact-buttons__delete"
-                  onClick={() => handleDeleteClick(contact)}
-                >
-                  <i className="fas fa-trash"></i>
-                </a>
-
-              </div>
-            </div>
+            <ContactCard
+              key={contact.id} 
+              contact={contact} 
+              onUpdate={goToUpdateContact} 
+              onDelete={handleDeleteClick} 
+            />
           ))
         ) : (
           <p>No contacts available.</p>
