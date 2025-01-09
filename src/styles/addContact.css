@@ -1,0 +1,10 @@
+.container{
+    border: 1px solid black;
+    margin-top: 2rem;
+    width: 500px;
+    height: 450px;
+}
+.container-title{
+    display: flex;
+    justify-content: center;
+}

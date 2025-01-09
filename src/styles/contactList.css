@@ -1,0 +1,55 @@
+.contact{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
+.contact-resume{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid darkgray;
+    margin-top: 1px;
+    
+}
+.contact-resume__img {
+    border-radius: 50%;
+    width: 200px; 
+    height: 200px; 
+    object-fit: cover;
+  }
+.contact-buttons{
+    margin-top: 1rem;
+    margin-right: 3rem;
+}
+.contact-buttons__update{
+    margin: 1rem;
+   font-size: 35px;
+}
+
+.contact-buttons__delete{
+    margin: 1rem;
+    font-size: 36px;
+}
+
+.container-addContact{
+    display: flex;
+    justify-content: end;
+    margin-right: 3rem;
+}
+.btnAddContact{
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+}
+.title{
+    display: flex;
+    justify-content: center;
+}
+.contact-resume__info{
+    display: flex;
+    flex-direction: row;
+}
+.contact-resume__list{
+    margin-left: 5rem;
+}
