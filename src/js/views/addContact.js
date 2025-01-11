@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import "/workspaces/react-hello-webapp-fs86-contactList-cguirao/src/styles/addContact.css";
-import { Dispatch } from "../dispatch";
 import ContactForm from "../component/contactForm";
 
 export const AddContact = () => {
   const { state } = useLocation();
-  const agendaName = state?.agendaName;
+  const { store, actions } = useContext(Context);
   const contact = state?.contact || {};
   const navigate = useNavigate();
-
   const isContactEmpty = Object.keys(contact).length === 0;
   const title = isContactEmpty ? "New Contact" : "Modify Contact";
 
@@ -21,18 +20,11 @@ export const AddContact = () => {
     id: contact.id || null,
   });
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const createContact = async () => {
+  
+  const createContact = async (newFormData) => {
     try {
-      const { id, ...newContactData } = formData;
-      const result = await Dispatch.createContact(agendaName, newContactData);
+      const { id, ...newContactData } = newFormData;
+      const result = await actions.createContact(newFormData);
       if (result) {
         alert("Contact created successfully!");
         goToContactList();
@@ -45,9 +37,12 @@ export const AddContact = () => {
     }
   };
 
-  const updateContact = async () => {
+  const updateContact = async (newFormData) => {
     try {
-      const result = await Dispatch.updateContact(agendaName, formData);
+      
+      const { id, ...newContactData } = newFormData;
+      const result = await actions.updateContact(newFormData);
+
       if (result) {
         alert("Contact updated successfully!");
         goToContactList();
@@ -72,7 +67,6 @@ export const AddContact = () => {
 
       <ContactForm
         formData={formData}
-        handleInputChange={handleInputChange}
         isContactEmpty={isContactEmpty}
         onSubmit={isContactEmpty ? createContact : updateContact}
       />

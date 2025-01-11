@@ -21,7 +21,7 @@ export const Dispatch = {
 
   createAgenda: async (agendaName) => {
     try {
-      const response = await fetch("https://playground.4geeks.com/contact/agendas/CGuirao", {
+      const response = await fetch(`${Dispatch.URL_AGENDA}/${agendaName}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export const Dispatch = {
 
   createContactDemo: async (agendaName) => {
     const urlContactName = `${Dispatch.URL_AGENDA}/${agendaName}/contacts`;
-
+  
     try {
       const response = await fetch(urlContactName, {
         method: 'POST',
@@ -60,11 +60,19 @@ export const Dispatch = {
           address: 'demo',
         }),
       });
+  
+      if (response.ok) {
+        const data = await response.json();
+        return data; 
+      } else {
+        const errorData = await response.json();
+        throw new Error(`Error al crear el contacto demo: ${errorData.message || 'Desconocido'}`);
+      }
     } catch (error) {
-      console.error("Error al crear los contactos:", error.message);
+      console.error("Error al crear el contacto demo:", error.message);
       return null;
     }
-  },
+  },  
 
   getContact: async (agendaName) => {
     const urlContactName = `${Dispatch.URL_AGENDA}/${agendaName}/contacts`;
@@ -109,7 +117,7 @@ export const Dispatch = {
     }
   },
   
-  createContact: async (agendaName, contact) => {
+  createContact: async (agendaName, object) => {
     const urlContactName = `${Dispatch.URL_AGENDA}/${agendaName}/contacts/`;
 
     try {
@@ -119,10 +127,10 @@ export const Dispatch = {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: contact.name,
-          phone: contact.phone,
-          email: contact.email,
-          address: contact.address,
+          name: object.name,
+          phone: object.phone,
+          email: object.email,
+          address: object.address,
         }),
       });
       if (response.ok) {
